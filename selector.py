@@ -7,6 +7,7 @@ import random
 from collections import namedtuple
 import uuid
 from typing import List, Dict
+import datetime
 
 
 app = Flask(__name__)
@@ -90,9 +91,11 @@ class ImageDisplayer:
     def get_next_file_index(self):
         return self.get_file_index(max(self.lhs_image.index, self.rhs_image.index) + 1)
 
-    def log_experiments(self, path: Path):
-        print(self.experiments)
-        with open(path, 'w') as fout:
+    def log_experiments(self):
+        dt = datetime.datetime.fromtimestamp(time())
+        dt_str = dt.strftime("%Y-%m-%d_%H_%M_%S")
+        fname = f"{dt_str}_experiment_log.csv"
+        with open(fname, 'w') as fout:
             fout.write("#id,left_pic,right_pic,left_pic_val,right_pic_val,exposition_begin,exposition_end,selected_pic\n")
             for v in self.experiments:
                 fout.write(f"{v.id},{v.left_pic},{v.right_pic},{v.left_pic_val},{v.right_pic_val},{v.exposition_begin},{v.exposition_end},{v.selected_pic}\n")
@@ -118,7 +121,7 @@ def index():
     if request.method == 'POST':
         selected_image = request.form['selected_image']
         if selected_image == "STOP":
-            image_displayer.log_experiments(Path("test_expsriments.csv"))
+            image_displayer.log_experiments()
             raise KeyboardInterrupt("Experiments were stopped by pressing STOP button")
         image_displayer.finalize_experiment(selected_image)
         if selected_image == "LHS":
