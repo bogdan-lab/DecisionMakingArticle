@@ -3,6 +3,58 @@
 
 <head>
     <style>
+        /* Style the label as a button container */
+        .image-button {
+            display: inline-block;
+            cursor: pointer;
+            margin: 10px;
+            border: 2px solid transparent;
+            transition: border 0.3s ease;
+        }
+
+        /* Style the selected image with a border */
+        .selected-image-button {
+            border: 2px solid green;
+            /* Change to your preferred style */
+        }
+
+        /* Hide the radio buttons */
+        .hidden-radio {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST" action="/">
+        <label class="image-button">
+            <input type="submit" name="selected_image" value="LHS" class="hidden-radio">
+            <img src="{{ image_lhs }}" alt="Image 1">
+        </label>
+        <label class="image-button">
+            <input type="submit" name="selected_image" value="RHS" class="hidden-radio">
+            <img src="{{ image_rhs }}" alt="Image 2">
+        </label>
+    </form>
+
+    <div class="stop_button">
+        <form action="/" method="POST">
+            <input type="hidden" name="selected_image" value="STOP">
+            <input type="submit" value="STOP EXPERIMENT">
+        </form>
+    </div>
+</body>
+
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <style>
         * {
             box-sizing: border-box;
         }
@@ -30,11 +82,8 @@
 
     <div class="row">
         <div class="column">
-            <img src="{{ image_lhs }}" alt="Snow" style="width:100%">
-            <form action="/" method="POST">
-                <input type="hidden" name="selected_image" value="LHS">
-                <input type="submit" value="Choose This Image">
-            </form>
+            <input type="hidden" name="selected_image" value="LHS">
+            <img src="{{ image_lhs }}" alt="Snow" style="width:100%" type="submit" action="/" method="POST">
         </div>
         <div class="column">
             <img src="{{ image_rhs }}" alt="Forest" style="width:100%">
@@ -53,4 +102,4 @@
 
 </body>
 
-</html>
+</html> -->
