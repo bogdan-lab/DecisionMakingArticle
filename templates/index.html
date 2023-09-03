@@ -30,16 +30,16 @@
 
     <div class="row">
         <div class="column">
-            <img src="{{ url_for('static', filename= image1) }}" alt="Snow" style="width:100%">
+            <img src="{{ image_lhs }}" alt="Snow" style="width:100%">
             <form action="/" method="POST">
-                <input type="hidden" name="selected_image" value="{{image1}}">
+                <input type="hidden" name="selected_image" value="LHS">
                 <input type="submit" value="Choose This Image">
             </form>
         </div>
         <div class="column">
-            <img src="{{ url_for('static', filename= image2) }}" alt="Forest" style="width:100%">
+            <img src="{{ image_rhs }}" alt="Forest" style="width:100%">
             <form action="/" method="POST">
-                <input type="hidden" name="selected_image" value="{{image2}}">
+                <input type="hidden" name="selected_image" value="RHS">
                 <input type="submit" value="Choose This Image">
             </form>
         </div>
