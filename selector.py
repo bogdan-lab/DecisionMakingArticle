@@ -106,10 +106,8 @@ class ImageDisplayer:
     def get_curr_rhs_image(self):
         return self.rhs_image.file
 
-    def change_lhs_image(self):
+    def change_images(self):
         self.lhs_image = self.get_next_file_index()
-
-    def change_rhs_image(self):
         self.rhs_image = self.get_next_file_index()
 
 
@@ -123,11 +121,9 @@ def index():
         if selected_image == "STOP":
             image_displayer.log_experiments()
             raise KeyboardInterrupt("Experiments were stopped by pressing STOP button")
+        
         image_displayer.finalize_experiment(selected_image)
-        if selected_image == "LHS":
-            image_displayer.change_rhs_image()
-        else:
-            image_displayer.change_lhs_image()
+        image_displayer.change_images()
         image_displayer.append_experiment()
     return render_template('index.html', image_lhs=image_displayer.get_curr_lhs_image(), image_rhs=image_displayer.get_curr_rhs_image())
 
