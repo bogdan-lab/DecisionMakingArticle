@@ -10,6 +10,14 @@
             margin: 10px;
             border: 2px solid transparent;
             transition: border 0.3s ease;
+            float: left;
+        }
+
+        /* Clear the float to prevent elements from wrapping */
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
         }
 
         /* Style the selected image with a border */
@@ -22,11 +30,15 @@
         .hidden-radio {
             display: none;
         }
+
+        img {
+            width: 40vw;
+        }
     </style>
 </head>
 
 <body>
-    <form method="POST" action="/">
+    <form method="POST" action="/" class="clearfix">
         <label class="image-button">
             <input type="submit" name="selected_image" value="LHS" class="hidden-radio">
             <img src="{{ image_lhs }}" alt="Image 1">
@@ -46,60 +58,3 @@
 </body>
 
 </html>
-
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-
-<head>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        .column {
-            float: left;
-            width: 50%;
-            padding: 5px;
-        }
-
-        /* Clearfix (clear floats) */
-        .row::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-    </style>
-</head>
-
-<body>
-
-    <h2>Images Side by Side</h2>
-    <p>How to create side-by-side images with the CSS float property:</p>
-
-
-    <div class="row">
-        <div class="column">
-            <input type="hidden" name="selected_image" value="LHS">
-            <img src="{{ image_lhs }}" alt="Snow" style="width:100%" type="submit" action="/" method="POST">
-        </div>
-        <div class="column">
-            <img src="{{ image_rhs }}" alt="Forest" style="width:100%">
-            <form action="/" method="POST">
-                <input type="hidden" name="selected_image" value="RHS">
-                <input type="submit" value="Choose This Image">
-            </form>
-        </div>
-    </div>
-    <div class="stop_button">
-        <form action="/" method="POST">
-            <input type="hidden" name="selected_image" value="STOP">
-            <input type="submit" value="STOP EXPERIMENT">
-        </form>
-    </div>
-
-</body>
-
-</html> -->
