@@ -90,6 +90,47 @@ class GeneratedImagesSource(DataSource):
         return self.rhs
 
 
+class CatDogsImageSource(DataSource):
+
+    @staticmethod
+    def load_pic_paths(path: Path):
+        data = get_files_in_folder(path, ".jpg")
+        shuffle_list(data)
+        return data
+
+    @staticmethod
+    def shuffle_pair(img_1: Image, img_2: Image):
+        if random.random() >= 0.5:
+            return img_1, img_2
+        return img_2, img_1
+
+    def init_lhs_and_rhs(self) -> None:
+        cat_path = self.cat_data[-1]
+        self.cat_data.pop()
+        dog_path = self.dog_data[-1]
+        self.dog_data.pop()
+        self.lhs, self.rhs = self.shuffle_pair(Image(cat_path, "cat"), Image(dog_path, "dog"))
+
+    def __init__(self, cat_path: Path, dog_path: Path) -> None:
+        self.cat_data = self.load_pic_paths(cat_path)
+        self.dog_data = self.load_pic_paths(dog_path)
+        self.init_lhs_and_rhs()
+    
+    def change_images(self) -> None:
+        self.init_lhs_and_rhs()
+    
+    def get_curr_lhs(self) -> Image:
+        return self.lhs
+    
+    def get_curr_rhs(self) -> Image:
+        return self.rhs
+
+
+
+class ArbitraryImagesSource:
+    pass
+
+
 class ImageDisplayer:
 
     def __init__(self, ds: DataSource):
@@ -145,7 +186,8 @@ class ImageDisplayer:
 
 
 
-data_source = GeneratedImagesSource(Path("static/images"))
+# data_source = GeneratedImagesSource(Path("static/images/angles"))
+data_source = CatDogsImageSource(cat_path=Path("static/images/CatsDogs/cats"), dog_path=Path("static/images/CatsDogs/dogs"))
 
 
 global image_displayer
