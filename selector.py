@@ -69,10 +69,15 @@ class GeneratedImagesSource(DataSource):
         shuffle_list(result)
         return result
 
+    def init_lhs_and_rhs(self) -> None:
+        self.lhs = self.data[-1]
+        self.data.pop()
+        self.rhs = self.data[-1]
+        self.data.pop()
+
     def __init__(self, path: Path):
         self.data = self.buid_file_data(path)
-        self.lhs = self.acquire_last()
-        self.rhs = self.acquire_last()
+        self.init_lhs_and_rhs()
     
     def acquire_last(self) -> Image:
         img = self.data[-1]
@@ -80,8 +85,7 @@ class GeneratedImagesSource(DataSource):
         return img
     
     def change_images(self) -> None:
-        self.lhs = self.acquire_last()
-        self.rhs = self.acquire_last()
+        self.init_lhs_and_rhs()
     
     def get_curr_lhs(self) -> Image:
         return self.lhs
@@ -127,8 +131,32 @@ class CatDogsImageSource(DataSource):
 
 
 
-class ArbitraryImagesSource:
-    pass
+class ArbitraryImagesSource(DataSource):
+    
+    @staticmethod
+    def load_pic_paths(path: Path, ext: str):
+        data = get_files_in_folder(path, ext)
+        shuffle_list(data)
+        return data
+   
+    def init_lhs_and_rhs(self) -> None:
+        self.lhs = Image(path=self.data[-1], value=None)
+        self.data.pop()
+        self.rhs = Image(path=self.data[-1], value=None)
+        self.data.pop()
+
+    def __init__(self, path: Path, pic_ext: str) -> None:
+        self.data = self.load_pic_paths(path, pic_ext)
+        self.init_lhs_and_rhs()
+    
+    def change_images(self) -> None:
+        self.init_lhs_and_rhs()
+    
+    def get_curr_lhs(self) -> Image:
+        return self.lhs
+    
+    def get_curr_rhs(self) -> Image:
+        return self.rhs
 
 
 class ImageDisplayer:
@@ -187,8 +215,8 @@ class ImageDisplayer:
 
 
 # data_source = GeneratedImagesSource(Path("static/images/angles"))
-data_source = CatDogsImageSource(cat_path=Path("static/images/CatsDogs/cats"), dog_path=Path("static/images/CatsDogs/dogs"))
-
+# data_source = CatDogsImageSource(cat_path=Path("static/images/CatsDogs/cats"), dog_path=Path("static/images/CatsDogs/dogs"))
+data_source = ArbitraryImagesSource(path=Path("static/images/CatsDogs/cats"), pic_ext=".jpg")
 
 global image_displayer
 image_displayer = ImageDisplayer(data_source)
